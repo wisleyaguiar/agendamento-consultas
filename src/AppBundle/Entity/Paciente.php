@@ -36,13 +36,6 @@ class Paciente
     private $telefone;
 
     /**
-     * @var array
-     *
-     * @ORM\Column(name="agendamentos", type="array")
-     */
-    private $agendamentos;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dataCadastro", type="datetime")
@@ -113,30 +106,6 @@ class Paciente
     public function getTelefone()
     {
         return $this->telefone;
-    }
-
-    /**
-     * Set agendamentos
-     *
-     * @param array $agendamentos
-     *
-     * @return Paciente
-     */
-    public function setAgendamentos($agendamentos)
-    {
-        $this->agendamentos = $agendamentos;
-
-        return $this;
-    }
-
-    /**
-     * Get agendamentos
-     *
-     * @return array
-     */
-    public function getAgendamentos()
-    {
-        return $this->agendamentos;
     }
 
     /**

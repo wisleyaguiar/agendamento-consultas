@@ -36,20 +36,6 @@ class Agenda
     private $hora;
 
     /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="funcionario", type="object")
-     */
-    private $funcionario;
-
-    /**
-     * @var \stdClass
-     *
-     * @ORM\Column(name="paciente", type="object")
-     */
-    private $paciente;
-
-    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dataCadastro", type="datetime")
@@ -120,54 +106,6 @@ class Agenda
     public function getHora()
     {
         return $this->hora;
-    }
-
-    /**
-     * Set funcionario
-     *
-     * @param \stdClass $funcionario
-     *
-     * @return Agenda
-     */
-    public function setFuncionario($funcionario)
-    {
-        $this->funcionario = $funcionario;
-
-        return $this;
-    }
-
-    /**
-     * Get funcionario
-     *
-     * @return \stdClass
-     */
-    public function getFuncionario()
-    {
-        return $this->funcionario;
-    }
-
-    /**
-     * Set paciente
-     *
-     * @param \stdClass $paciente
-     *
-     * @return Agenda
-     */
-    public function setPaciente($paciente)
-    {
-        $this->paciente = $paciente;
-
-        return $this;
-    }
-
-    /**
-     * Get paciente
-     *
-     * @return \stdClass
-     */
-    public function getPaciente()
-    {
-        return $this->paciente;
     }
 
     /**

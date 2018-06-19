@@ -54,14 +54,12 @@ class PacienteController extends FOSRestController
         $data = new Paciente();
         $nome = $request->get('nome');
         $telefone = $request->get('telefone');
-        $agendamentos = [];
         $dataCadastro = new \DateTime();
         if(empty($nome) || empty($telefone)){
             return new View("Dados obrigatórios não enviandos", Response::HTTP_NOT_ACCEPTABLE);
         } else {
             $data->setNome($nome);
             $data->setTelefone($telefone);
-            $data->setAgendamentos($agendamentos);
             $data->setDataCadastro($dataCadastro);
             $em = $this->getDoctrine()->getManager();
             $em->persist($data);
@@ -78,7 +76,6 @@ class PacienteController extends FOSRestController
         $data = new Paciente();
         $nome = $request->get('nome');
         $telefone = $request->get('telefone');
-        $agendamentos = [];
         $dataAtualizacao = new \DateTime();
         $sn = $this->getDoctrine()->getManager();
         $paciente = $this->getDoctrine()->getRepository('AppBundle:Paciente')->find($id);
@@ -88,7 +85,6 @@ class PacienteController extends FOSRestController
         elseif(!empty($nome) && !empty($telefone)){
             $paciente->setNome($nome);
             $paciente->setTelefone($telefone);
-            $paciente->setAgendamentos($agendamentos);
             $paciente->setDataAtualizacao($dataAtualizacao);
             $sn->flush();
             return new View("Paciente atualizado com sucesso", Response::HTTP_OK);

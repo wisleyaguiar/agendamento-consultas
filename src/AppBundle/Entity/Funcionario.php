@@ -59,16 +59,9 @@ class Funcionario
     /**
      * @var string
      *
-     * @ORM\Column(name="especialidade", type="string", length=255)
+     * @ORM\Column(name="telefone", type="string", length=255)
      */
-    private $especialidade;
-
-    /**
-     * @var array
-     *
-     * @ORM\Column(name="agendamentos", type="array")
-     */
-    private $agendamentos;
+    private $telefone;
 
     /**
      * @var \DateTime
@@ -216,51 +209,19 @@ class Funcionario
     }
 
     /**
-     * Set especialidade
-     *
-     * @param string $especialidade
-     *
-     * @return Funcionario
-     */
-    public function setEspecialidade($especialidade)
-    {
-        $this->especialidade = $especialidade;
-
-        return $this;
-    }
-
-    /**
-     * Get especialidade
-     *
      * @return string
      */
-    public function getEspecialidade()
+    public function getTelefone()
     {
-        return $this->especialidade;
+        return $this->telefone;
     }
 
     /**
-     * Set agendamentos
-     *
-     * @param array $agendamentos
-     *
-     * @return Funcionario
+     * @param string $telefone
      */
-    public function setAgendamentos($agendamentos)
+    public function setTelefone($telefone)
     {
-        $this->agendamentos = $agendamentos;
-
-        return $this;
-    }
-
-    /**
-     * Get agendamentos
-     *
-     * @return array
-     */
-    public function getAgendamentos()
-    {
-        return $this->agendamentos;
+        $this->telefone = $telefone;
     }
 
     /**
