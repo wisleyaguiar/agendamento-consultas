@@ -17,6 +17,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Agenda;
+use AppBundle\Entity\Paciente;
+use AppBundle\Entity\Funcionario;
 
 class AgendaController extends FOSRestController
 {
@@ -51,17 +53,33 @@ class AgendaController extends FOSRestController
      */
     public function postAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $data = new Agenda();
         $dia = $request->get('data');
         $horario = $request->get('hora');
         $dataCadastro = new \DateTime();
-        if(empty($dia) || empty($horario)){
+
+        $funcionario = $request->get('funcionario');
+        $paciente = $request->get('paciente');
+
+        $resultFuncionario = $this->getDoctrine()->getRepository('AppBundle:Funcionario')->find($funcionario);
+        $resultPaciente = $this->getDoctrine()->getRepository('AppBundle:Paciente')->find($paciente);
+
+        if(empty($resultFuncionario)) {
+            return new View("Funcionário não encontrado",Response::HTTP_NOT_ACCEPTABLE);
+        }
+        elseif(empty($resultPaciente)) {
+            return new View("Paciente não encontrado", Response::HTTP_NOT_ACCEPTABLE);
+        }
+        elseif(empty($dia) || empty($horario)){
             return new View("Dados obrigatórios não enviandos", Response::HTTP_NOT_ACCEPTABLE);
         } else {
             $data->setData($dia);
             $data->setHora($horario);
+            $data->setFuncionario($resultFuncionario);
+            $data->setPaciente($resultPaciente);
             $data->setDataCadastro($dataCadastro);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($data);
             $em->flush();
             return new View("Agenda cadastrada com sucesso", Response::HTTP_OK);
@@ -73,18 +91,34 @@ class AgendaController extends FOSRestController
      */
     public function updateAction($id, Request $request)
     {
-        $data = new Agenda();
+        $sn = $this->getDoctrine()->getManager();
+
         $dia = $request->get('data');
         $horario = $request->get('hora');
         $dataAtualizacao = new \DateTime();
-        $sn = $this->getDoctrine()->getManager();
+
+        $funcionario = $request->get('funcionario');
+        $paciente = $request->get('paciente');
+
+        $resultFuncionario = $this->getDoctrine()->getRepository('AppBundle:Funcionario')->find($funcionario);
+        $resultPaciente = $this->getDoctrine()->getRepository('AppBundle:Paciente')->find($paciente);
+
         $agenda = $this->getDoctrine()->getRepository('AppBundle:Agenda')->find($id);
+
         if(empty($agenda)){
             return new View("Agenda não encontrada", Response::HTTP_NOT_FOUND);
+        }
+        elseif(empty($resultFuncionario)) {
+            return new View("Funcionário não encontrado",Response::HTTP_NOT_ACCEPTABLE);
+        }
+        elseif(empty($resultPaciente)) {
+            return new View("Paciente não encontrado", Response::HTTP_NOT_ACCEPTABLE);
         }
         elseif(!empty($dia) && !empty($horario)){
             $agenda->setData($dia);
             $agenda->setHora($horario);
+            $agenda->setFuncionario($resultFuncionario);
+            $agenda->setPaciente($resultPaciente);
             $agenda->setDataAtualizacao($dataAtualizacao);
             $sn->flush();
             return new View("Agenda atualizada com sucesso", Response::HTTP_OK);

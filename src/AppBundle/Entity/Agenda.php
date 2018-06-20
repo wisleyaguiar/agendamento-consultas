@@ -36,6 +36,24 @@ class Agenda
     private $hora;
 
     /**
+     * @var Funcionario
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Funcionario", inversedBy="agendas")
+     * @ORM\JoinColumn(name="funcionario_id", referencedColumnName="id")
+     * @Serializer\Exclude()
+     */
+    private $funcionario;
+
+    /**
+     * @var Paciente
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Paciente", inversedBy="agendas")
+     * @ORM\JoinColumn(name="paciente_id", referencedColumnName="id")
+     * @Serializer\Exclude()
+     */
+    private $paciente;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dataCadastro", type="datetime")
@@ -106,6 +124,38 @@ class Agenda
     public function getHora()
     {
         return $this->hora;
+    }
+
+    /**
+     * @return Funcionario
+     */
+    public function getFuncionario()
+    {
+        return $this->funcionario;
+    }
+
+    /**
+     * @param Funcionario $funcionario
+     */
+    public function setFuncionario($funcionario)
+    {
+        $this->funcionario = $funcionario;
+    }
+
+    /**
+     * @return Paciente
+     */
+    public function getPaciente()
+    {
+        return $this->paciente;
+    }
+
+    /**
+     * @param Paciente $paciente
+     */
+    public function setPaciente($paciente)
+    {
+        $this->paciente = $paciente;
     }
 
     /**
