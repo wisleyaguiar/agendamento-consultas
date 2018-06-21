@@ -8,6 +8,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Usuario;
 use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Paciente;
+use Ramsey\Uuid\Uuid;
 
 class PacienteController extends FOSRestController
 {
@@ -51,17 +53,38 @@ class PacienteController extends FOSRestController
      */
     public function postAction(Request $request)
     {
-        $data = new Paciente();
+        $em = $this->getDoctrine()->getManager();
+
         $nome = $request->get('nome');
         $telefone = $request->get('telefone');
+
+        $email = $request->get('email');
+        $senha = $request->get('password');
+
         $dataCadastro = new \DateTime();
-        if(empty($nome) || empty($telefone)){
+
+        $usuario = $this->getDoctrine()->getRepository('AppBundle:Usuario')->findOneBy(['email' => $email]);
+
+        if(!is_null($usuario)){
+            return new View("Este E-mail já está cadastrado", Response::HTTP_NOT_ACCEPTABLE);
+        }
+        elseif(empty($nome) || empty($telefone)){
             return new View("Dados obrigatórios não enviandos", Response::HTTP_NOT_ACCEPTABLE);
         } else {
+            $usuario = new Usuario();
+            $usuario->setUsername($email);
+            $usuario->setEmail($email);
+            $sec = $this->get('security.password_encoder');
+            $usuario->setPassword($sec->encodePassword($usuario,$senha));
+            $usuario->setRoles('ROLE_USER');
+            $em->persist($usuario);
+            $em->flush();
+
+            $data = new Paciente();
             $data->setNome($nome);
             $data->setTelefone($telefone);
+            $data->setUsuario($usuario);
             $data->setDataCadastro($dataCadastro);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($data);
             $em->flush();
             return new View("Paciente cadastrado com sucesso", Response::HTTP_OK);
@@ -121,5 +144,39 @@ class PacienteController extends FOSRestController
             $sn->flush();
         }
         return new View("Paciente excluído com sucesso", Response::HTTP_OK);
+    }
+
+    /**
+     * @Rest\Post("/rest/login")
+     * @param Request $request
+     * @return View
+     */
+    public function loginAction(Request $request)
+    {
+        $d = $this->getDoctrine();
+        $em = $d->getManager();
+        $user = json_decode($request->getContent());
+        if(!isset($user->username) || !isset($user->password)){
+            return new View("Usuário ou senha inválidos",Response::HTTP_BAD_REQUEST);
+        }
+        $dbUser = $d->getRepository("AppBundle:Usuario")->findOneBy(['username'=>$user->username]);
+        if(is_null($dbUser)){
+            return new View("Usuário ou senha inválidos",Response::HTTP_BAD_REQUEST);
+        }
+        $encoder = $this->get("security.password_encoder");
+        if(!$encoder->isPasswordValid($dbUser,$user->password)){
+            return new View("Usuário ou senha inválidos");
+        }
+        $uuid = Uuid::uuid5(Uuid::uuid1(),$dbUser->getUsername());
+        $token = $uuid->toString();
+
+        $retorno = [
+            'token' => $token,
+            'user_id' => $dbUser->getId(),
+            'username' => $dbUser->getUsername(),
+            'email' => $dbUser->getEmail()
+        ];
+
+        return new View($retorno,Response::HTTP_OK);
     }
 }

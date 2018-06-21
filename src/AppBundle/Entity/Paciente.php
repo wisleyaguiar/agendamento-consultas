@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JMS\Serializer\Annotation as Serializer;
 
 /**
  * Paciente
@@ -34,6 +35,15 @@ class Paciente
      * @ORM\Column(name="telefone", type="string", length=255)
      */
     private $telefone;
+
+    /**
+     * @var Usuario
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Usuario", inversedBy="pacientes")
+     * @ORM\JoinColumn(name="usuario_id", referencedColumnName="id")
+     * @Serializer\Exclude()
+     */
+    private $usuario;
 
     /**
      * @var \DateTime
@@ -106,6 +116,22 @@ class Paciente
     public function getTelefone()
     {
         return $this->telefone;
+    }
+
+    /**
+     * @return Usuario
+     */
+    public function getUsuario()
+    {
+        return $this->usuario;
+    }
+
+    /**
+     * @param Usuario $usuario
+     */
+    public function setUsuario($usuario)
+    {
+        $this->usuario = $usuario;
     }
 
     /**
