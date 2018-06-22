@@ -51,6 +51,8 @@ class FuncionarioController extends FOSRestController
      */
     public function postAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+
         $data = new Funcionario();
         $nome = $request->get('nome');
         $dataNascimento = $request->get('data_nascimento');
@@ -58,8 +60,15 @@ class FuncionarioController extends FOSRestController
         $estadoCivil = $request->get('estado_civil');
         $cargo = $request->get('cargo');
         $telefone = $request->get('telefone');
+        $especialidade = $request->get('especialidade');
         $dataCadastro = new \DateTime();
-        if(empty($nome) || empty($dataNascimento) || empty($sexo) || empty($estadoCivil) || empty($cargo) || empty($telefone)){
+
+        $dbEspecialidade = $this->getDoctrine()->getRepository('AppBundle:Especialidade')->find($especialidade);
+
+        if(is_null($dbEspecialidade)) {
+            return new View("Especialidade não encontrada",Response::HTTP_NOT_ACCEPTABLE);
+        }
+        elseif(empty($nome) || empty($dataNascimento) || empty($sexo) || empty($estadoCivil) || empty($cargo) || empty($telefone)){
             return new View("Dados obrigatórios não enviandos", Response::HTTP_NOT_ACCEPTABLE);
         } else {
             $data->setNome($nome);
@@ -69,7 +78,6 @@ class FuncionarioController extends FOSRestController
             $data->setCargo($cargo);
             $data->setTelefone($telefone);
             $data->setDataCadastro($dataCadastro);
-            $em = $this->getDoctrine()->getManager();
             $em->persist($data);
             $em->flush();
             return new View("Funcionario cadastrado com sucesso", Response::HTTP_OK);
@@ -88,10 +96,15 @@ class FuncionarioController extends FOSRestController
         $estadoCivil = $request->get('estado_civil');
         $cargo = $request->get('cargo');
         $telefone = $request->get('telefone');
+        $especialidade = $request->get('especialidade');
         $dataAtualizacao = new \DateTime();
         $sn = $this->getDoctrine()->getManager();
         $funcionario = $this->getDoctrine()->getRepository('AppBundle:Funcionario')->find($id);
-        if(empty($funcionario)){
+        $dbEspecialidade = $this->getDoctrine()->getRepository('AppBundle:Especialidade')->find($especialidade);
+        if(is_null($dbEspecialidade)){
+            return new View("Especialidade não encontrada", Response::HTTP_NOT_ACCEPTABLE);
+        }
+        elseif(empty($funcionario)){
             return new View("Funcionário não encontrado", Response::HTTP_NOT_FOUND);
         }
         elseif(!empty($nome) && !empty($dataNascimento) && !empty($sexo) && !empty($estadoCivil) && !empty($cargo) && !empty($telefone)){

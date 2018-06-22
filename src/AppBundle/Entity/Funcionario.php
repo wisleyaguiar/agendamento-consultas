@@ -64,6 +64,15 @@ class Funcionario
     private $telefone;
 
     /**
+     * @var Especialidade
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Especialidade", inversedBy="funcionarios")
+     * @ORM\JoinColumn(name="especialidade_id", referencedColumnName="id")
+     * @Serializer\Exclude()
+     */
+    private $especialidade;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="dataCadastro", type="datetime")
@@ -222,6 +231,22 @@ class Funcionario
     public function setTelefone($telefone)
     {
         $this->telefone = $telefone;
+    }
+
+    /**
+     * @return Especialidade
+     */
+    public function getEspecialidade()
+    {
+        return $this->especialidade;
+    }
+
+    /**
+     * @param Especialidade $especialidade
+     */
+    public function setEspecialidade($especialidade)
+    {
+        $this->especialidade = $especialidade;
     }
 
     /**
