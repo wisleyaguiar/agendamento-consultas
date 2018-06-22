@@ -18,7 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\View\View;
 use AppBundle\Entity\Especialidade;
-use Ramsey\Uuid\Uuid;
 
 class EspecialidadeController extends FOSRestController
 {
