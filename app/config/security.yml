@@ -24,4 +24,4 @@ security:
             #form_login: ~
 
     encoders:
-            AppBundle\Entity\User: bcrypt
+            AppBundle\Entity\Usuario: bcrypt

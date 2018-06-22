@@ -56,6 +56,7 @@ class FuncionarioController extends FOSRestController
         $data = new Funcionario();
         $nome = $request->get('nome');
         $dataNascimento = $request->get('data_nascimento');
+        $dbNascimento = new \DateTime($dataNascimento);
         $sexo = $request->get('sexo');
         $estadoCivil = $request->get('estado_civil');
         $cargo = $request->get('cargo');
@@ -72,11 +73,12 @@ class FuncionarioController extends FOSRestController
             return new View("Dados obrigatórios não enviandos", Response::HTTP_NOT_ACCEPTABLE);
         } else {
             $data->setNome($nome);
-            $data->setDataNascimento($dataNascimento);
+            $data->setDataNascimento($dbNascimento);
             $data->setSexo($sexo);
             $data->setEstadoCivil($estadoCivil);
             $data->setCargo($cargo);
             $data->setTelefone($telefone);
+            $data->setEspecialidade($dbEspecialidade);
             $data->setDataCadastro($dataCadastro);
             $em->persist($data);
             $em->flush();
@@ -92,6 +94,7 @@ class FuncionarioController extends FOSRestController
         $data = new Funcionario();
         $nome = $request->get('nome');
         $dataNascimento = $request->get('data_nascimento');
+        $dbNascimento = new \DateTime($dataNascimento);
         $sexo = $request->get('sexo');
         $estadoCivil = $request->get('estado_civil');
         $cargo = $request->get('cargo');
@@ -109,14 +112,15 @@ class FuncionarioController extends FOSRestController
         }
         elseif(!empty($nome) && !empty($dataNascimento) && !empty($sexo) && !empty($estadoCivil) && !empty($cargo) && !empty($telefone)){
             $funcionario->setNome($nome);
-            $funcionario->setDataNascimento($dataNascimento);
+            $funcionario->setDataNascimento($dbNascimento);
             $funcionario->setSexo($sexo);
             $funcionario->setEstadoCivil($estadoCivil);
             $funcionario->setCargo($cargo);
             $funcionario->setTelefone($telefone);
+            $funcionario->setEspecialidade($dbEspecialidade);
             $funcionario->setDataAtualizacao($dataAtualizacao);
             $sn->flush();
-            return new View("Paciente atualizado com sucesso", Response::HTTP_OK);
+            return new View("Funcionário atualizado com sucesso", Response::HTTP_OK);
         }
         else {
             return new View("Dados obrigatórios não informados", Response::HTTP_NOT_ACCEPTABLE);

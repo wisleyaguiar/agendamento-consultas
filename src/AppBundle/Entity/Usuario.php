@@ -169,7 +169,7 @@ class Usuario implements UserInterface
     /**
      * Get roles
      *
-     * @return string
+     * @return array
      */
     public function getRoles()
     {
