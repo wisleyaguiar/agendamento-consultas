@@ -177,6 +177,7 @@ class PacienteController extends FOSRestController
             'email' => $dbUser->getEmail()
         ];
 
-        return new View($retorno,Response::HTTP_OK);
+        //return new View($retorno,Response::HTTP_OK);
+        return new View($token,Response::HTTP_OK);
     }
 }
