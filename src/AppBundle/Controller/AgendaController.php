@@ -19,6 +19,7 @@ use FOS\RestBundle\View\View;
 use AppBundle\Entity\Agenda;
 use AppBundle\Entity\Paciente;
 use AppBundle\Entity\Funcionario;
+use AppBundle\Entity\Usuario;
 
 class AgendaController extends FOSRestController
 {
