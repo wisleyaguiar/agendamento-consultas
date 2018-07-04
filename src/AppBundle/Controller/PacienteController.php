@@ -69,7 +69,7 @@ class PacienteController extends FOSRestController
             'id' => $paciente->getId(),
             'nome' => $paciente->getNome(),
             'telefone' => $paciente->getTelefone(),
-            'usuario' => $paciente->getUsuario(),
+            'email' => $email,
             'data_cadastro' => $paciente->getDataCadastro(),
             'data_atualizacao' => $paciente->getDataAtualizacao()
         ];
