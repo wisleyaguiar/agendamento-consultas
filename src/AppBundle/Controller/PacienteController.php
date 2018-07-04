@@ -46,7 +46,7 @@ class PacienteController extends FOSRestController
             ];
         }
 
-        return $restResult;
+        return new View($retorno,Response::HTTP_OK);
     }
 
     /**
@@ -58,7 +58,19 @@ class PacienteController extends FOSRestController
         if($restIdResult === null){
             return new View("Este paciente não existe", Response::HTTP_NOT_FOUND);
         }
-        return $restIdResult;
+
+        $paciente = $restIdResult;
+
+        $retorno[] = [
+            'id' => $paciente->getId(),
+            'nome' => $paciente->getNome(),
+            'telefone' => $paciente->getTelefone(),
+            'usuario' => $paciente->getUsuario(),
+            'data_cadastro' => $paciente->getDataCadastro(),
+            'data_atualizacao' => $paciente->getDataAtualizacao()
+        ];
+
+        return new View($retorno,Response::HTTP_OK);
     }
 
     /**
