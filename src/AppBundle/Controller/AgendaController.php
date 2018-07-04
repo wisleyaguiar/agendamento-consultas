@@ -38,8 +38,8 @@ class AgendaController extends FOSRestController
         foreach ($restResult as $agenda){
             $retorno[] = [
                 'id' => $agenda->getId(),
-                'data' => $agenda->getData(),
-                'hora' => $agenda->getHora(),
+                'data' => $agenda->getData()->format("d/m/Y"),
+                'hora' => $agenda->getHora()->format("H:i"),
                 'data_cadastro' => $agenda->getDataCadastro(),
                 'data_atualizacao' => $agenda->getDataAtualizacao(),
                 'paciente' => $agenda->getPaciente(),

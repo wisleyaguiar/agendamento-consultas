@@ -33,6 +33,19 @@ class PacienteController extends FOSRestController
             return new View("Não existem pacientes", Response::HTTP_NOT_FOUND);
         }
 
+        $retorno = [];
+
+        foreach ($restResult as $paciente) {
+            $retorno[] = [
+                'id' => $paciente->getId(),
+                'nome' => $paciente->getNome(),
+                'telefone' => $paciente->getTelefone(),
+                'usuario' => $paciente->getUsuario(),
+                'data_cadastro' => $paciente->getDataCadastro(),
+                'data_atualizacao' => $paciente->getDataAtualizacao()
+            ];
+        }
+
         return $restResult;
     }
 
