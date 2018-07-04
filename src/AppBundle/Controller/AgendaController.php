@@ -47,7 +47,7 @@ class AgendaController extends FOSRestController
             ];
         }
 
-        return new View($retorno,Response::HTTP_NOT_FOUND);
+        return new View($retorno,Response::HTTP_OK);
     }
 
     /**
@@ -72,7 +72,7 @@ class AgendaController extends FOSRestController
             'funcionario' => $agenda->getFuncionario()
         ];
 
-        return new View($retorno,Response::HTTP_NOT_FOUND);
+        return new View($retorno,Response::HTTP_OK);
     }
 
     /**
