@@ -50,10 +50,12 @@ class PacienteController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/rest/paciente/{email}")
+     * @Rest\Get("/rest/paciente/email/")
      */
-    public function getByEmail($email)
+    public function getByEmail(Request $request)
     {
+        $email = $request->get('value');
+
         $restIdResult = $this->getDoctrine()->getRepository('AppBundle:Usuario')->findOneBy(['email'=>$email]);
         $resultPaciente = $this->getDoctrine()->getRepository('AppBundle:Paciente')->findOneBy(['usuario'=>$restIdResult]);
 
