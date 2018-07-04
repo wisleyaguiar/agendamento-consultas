@@ -51,6 +51,39 @@ class AgendaController extends FOSRestController
     }
 
     /**
+     * @Rest\Get("/rest/agendas/email")
+     */
+    public function getByEmail(Request $request)
+    {
+        $email = $request->get('value');
+
+        $restIdResult = $this->getDoctrine()->getRepository('AppBundle:Usuario')->findOneBy(['email'=>$email]);
+        $resultPaciente = $this->getDoctrine()->getRepository('AppBundle:Paciente')->findOneBy(['usuario'=>$restIdResult]);
+        $agendaResult = $this->getDoctrine()->getRepository('AppBundle:Agenda')->findBy(['paciente'=>$resultPaciente]);
+
+        if($agendaResult === null){
+            return new View("Este agendas não existe", Response::HTTP_NOT_FOUND);
+        }
+
+        $retorno = [];
+
+        foreach ($agendaResult as $agenda){
+            $retorno[] = [
+                'id' => $agenda->getId(),
+                'data' => $agenda->getData()->format("d/m/Y"),
+                'hora' => $agenda->getHora()->format("H:i"),
+                'data_cadastro' => $agenda->getDataCadastro(),
+                'data_atualizacao' => $agenda->getDataAtualizacao(),
+                'paciente' => $agenda->getPaciente(),
+                'funcionario' => $agenda->getFuncionario()
+            ];
+        }
+
+        return new View($retorno,Response::HTTP_OK);
+
+    }
+
+    /**
      * @Rest\Get("/rest/agenda/{id}")
      */
     public function idAction($id)
