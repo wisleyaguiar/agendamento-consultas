@@ -50,7 +50,7 @@ class PacienteController extends FOSRestController
     }
 
     /**
-     * @Rest\Get("/rest/pacientes/{email}")
+     * @Rest\Get("/rest/paciente/{email}")
      */
     public function getByEmail($email)
     {
