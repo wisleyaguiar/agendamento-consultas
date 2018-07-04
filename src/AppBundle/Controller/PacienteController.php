@@ -50,6 +50,35 @@ class PacienteController extends FOSRestController
     }
 
     /**
+     * @Rest/Get("/rest/pacientes/email")
+     */
+    public function getByEmail(Request $request)
+    {
+        $email = $request->get('value');
+
+        $restIdResult = $this->getDoctrine()->getRepository('AppBundle:Usuario')->findOneBy(['email'=>$email]);
+        $resultPaciente = $this->getDoctrine()->getRepository('AppBundle:Paciente')->findOneBy(['usuario'=>$restIdResult]);
+
+        if($resultPaciente === null){
+            return new View("Este paciente não existe", Response::HTTP_NOT_FOUND);
+        }
+
+        $paciente = $resultPaciente;
+
+        $retorno[] = [
+            'id' => $paciente->getId(),
+            'nome' => $paciente->getNome(),
+            'telefone' => $paciente->getTelefone(),
+            'usuario' => $paciente->getUsuario(),
+            'data_cadastro' => $paciente->getDataCadastro(),
+            'data_atualizacao' => $paciente->getDataAtualizacao()
+        ];
+
+        return new View($retorno,Response::HTTP_OK);
+
+    }
+
+    /**
      * @Rest\Get("/rest/paciente/{id}")
      */
     public function idAction($id)
