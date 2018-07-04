@@ -203,6 +203,6 @@ class PacienteController extends FOSRestController
         ];
 
         //return new View($retorno,Response::HTTP_OK);
-        return new View("true",Response::HTTP_OK,['Authorization'=>$token]);
+        return new View($retorno,Response::HTTP_OK,['Authorization'=>$token]);
     }
 }
