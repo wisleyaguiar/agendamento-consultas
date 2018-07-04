@@ -33,7 +33,21 @@ class AgendaController extends FOSRestController
             return new View("Não existem agenda", Response::HTTP_NOT_FOUND);
         }
 
-        return $restResult;
+        $retorno = [];
+
+        foreach ($restResult as $agenda){
+            $retorno[] = [
+                'id' => $agenda->getId(),
+                'data' => $agenda->getData(),
+                'hora' => $agenda->getHora(),
+                'data_cadastro' => $agenda->getDataCadastro(),
+                'data_atualizacao' => $agenda->getDataAtualizacao(),
+                'paciente' => $agenda->getPaciente(),
+                'funcionario' => $agenda->getFuncionario()
+            ];
+        }
+
+        return new View($retorno,Response::HTTP_NOT_FOUND);
     }
 
     /**
