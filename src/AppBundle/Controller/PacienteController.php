@@ -65,7 +65,7 @@ class PacienteController extends FOSRestController
 
         $paciente = $resultPaciente;
 
-        $retorno[] = [
+        $retorno = [
             'id' => $paciente->getId(),
             'nome' => $paciente->getNome(),
             'telefone' => $paciente->getTelefone(),
@@ -90,7 +90,7 @@ class PacienteController extends FOSRestController
 
         $paciente = $restIdResult;
 
-        $retorno[] = [
+        $retorno = [
             'id' => $paciente->getId(),
             'nome' => $paciente->getNome(),
             'telefone' => $paciente->getTelefone(),
