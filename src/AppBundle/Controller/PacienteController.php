@@ -211,11 +211,11 @@ class PacienteController extends FOSRestController
         $em = $d->getManager();
         $user = json_decode($request->getContent());
         if(!isset($user->username) || !isset($user->password)){
-            return new View("Usuário ou senha inválidos",Response::HTTP_BAD_REQUEST);
+            return new View("Usuário ou senha inválidos",Response::HTTP_NOT_FOUND);
         }
         $dbUser = $d->getRepository("AppBundle:Usuario")->findOneBy(['username'=>$user->username]);
         if(is_null($dbUser)){
-            return new View("Usuário ou senha inválidos",Response::HTTP_BAD_REQUEST);
+            return new View("Usuário ou senha inválidos",Response::HTTP_NOT_FOUND);
         }
         $encoder = $this->get("security.password_encoder");
         if(!$encoder->isPasswordValid($dbUser,$user->password)){
